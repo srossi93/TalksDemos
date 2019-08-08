@@ -29,69 +29,69 @@
 
 \DeclareGraphicsRule{.pdf.pdf}{pdf}{*}{}
 \begin{document}
-    \makeatletter
-    \newcommand{\inputtikz}[1]{
-    \filename@parse{#1}
-    \let\fpath\filename@area
-    \ifdefined\compilefigures
+\makeatletter
+\newcommand{\inputtikz}[1]{
+  \filename@parse{#1}
+  \let\fpath\filename@area
+  \ifdefined\compilefigures
     %        \tikzsetnextfilename{\filename@area\filename@base.pdf}
     \newcommand*\setmyname{%
-    \expandafter\tikzsetfigurename\expandafter{\filename@area\filename@base-}%
-    \apptocmd{\sa@document}{\setmyname}{\typeout{Append to document: OK!}}{\typeout{Append to document: Oh, no!}}
+      \expandafter\tikzsetfigurename\expandafter{\filename@area\filename@base-}%
+      \apptocmd{\sa@document}{\setmyname}{\typeout{Append to document: OK!}}{\typeout{Append to document: Oh, no!}}
     }
     \InputIfFileExists
     {\filename@area\filename@base}{}%
     {File `#1' doesn't exist!}% (or using \errmessage)
     %        \sometext
-    \else
+  \else
     \includegraphics[]{\fpath\filename@base.pdf.pdf}
-    \fi
+  \fi
+}
+\makeatother
+
+\frame{\titlepage}
+
+\begin{frame}[fragile]{Bad convergence}
+  % Style to select only points from #1 to #2 (inclusive)
+  \centering
+  \pgfplotsset{select coords between index/.style 2 args={
+        x filter/.code={
+            \ifnum\coordindex<#1\def\pgfmathresult{}\fi
+            \ifnum\coordindex>#2\def\pgfmathresult{}\fi
+          }
+      }}
+
+  \setlength\figureheight{.55\textwidth}
+  \setlength\figurewidth{.55\textwidth}
+  \begin{animateinline}[loop,autoplay]{4} % 2 frames per sec
+    \multiframe{15}{idx=1+1}{  % 22 fram
+      \inputtikz{figs/gd_bad_init.tex}
     }
-    \makeatother
+  \end{animateinline}
 
-    \frame{\titlepage}
-
-    \begin{frame}[fragile]{Bad convergence}
-        % Style to select only points from #1 to #2 (inclusive)
-        \centering
-        \pgfplotsset{select coords between index/.style 2 args={
+\end{frame}
+\begin{frame}[fragile]{Good convergence}
+  % Style to select only points from #1 to #2 (inclusive)
+  \centering
+  \pgfplotsset{select coords between index/.style 2 args={
         x filter/.code={
-        \ifnum\coordindex<#1\def\pgfmathresult{}\fi
-        \ifnum\coordindex>#2\def\pgfmathresult{}\fi
-        }
-        }}
+            \ifnum\coordindex<#1\def\pgfmathresult{}\fi
+            \ifnum\coordindex>#2\def\pgfmathresult{}\fi
+          }
+      }}
+  \setlength\figureheight{.55\textwidth}
+  \setlength\figurewidth{.55\textwidth}
+  \begin{animateinline}[loop,autoplay]{10} % 2 frames per sec
+    \multiframe{25}{idx=1+1}{  % 22 fram
+      \inputtikz{figs/gd_good_init.tex}
+    }
+  \end{animateinline}
 
-        \setlength\figureheight{.55\textwidth}
-        \setlength\figurewidth{.55\textwidth}
-        \begin{animateinline}[loop,autoplay]{4} % 2 frames per sec
-            \multiframe{15}{idx=1+1}{  % 22 fram
-            \inputtikz{figs/gd_bad_init.tex}
-            }
-        \end{animateinline}
+\end{frame}
 
-    \end{frame}
-    \begin{frame}[fragile]{Good convergence}
-        % Style to select only points from #1 to #2 (inclusive)
-        \centering
-        \pgfplotsset{select coords between index/.style 2 args={
-        x filter/.code={
-        \ifnum\coordindex<#1\def\pgfmathresult{}\fi
-        \ifnum\coordindex>#2\def\pgfmathresult{}\fi
-        }
-        }}
-        \setlength\figureheight{.55\textwidth}
-        \setlength\figurewidth{.55\textwidth}
-        \begin{animateinline}[loop,autoplay]{10} % 2 frames per sec
-            \multiframe{25}{idx=1+1}{  % 22 fram
-            \inputtikz{figs/gd_good_init.tex}
-            }
-        \end{animateinline}
+\begin{frame}{Hi}
 
-    \end{frame}
-
-    \begin{frame}{Hi}
-
-    \end{frame}
+\end{frame}
 
 \end{document}
 
