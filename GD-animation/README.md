@@ -1,4 +1,4 @@
-## Gradient Descent Example with Animations (with Tikz export)
+# Gradient Descent Animation (with LaTeX export)
 This project presents some animations demonstrating 
 [gradient descent algorithm](http://en.wikipedia.org/wiki/Gradient_descent).
 
@@ -69,13 +69,13 @@ but it's also reported here for convenience.
 \end{frame}
 ```
 
-In `./fig/` you already have two prepared  
+In `./fig/` you already have two prepared figures that can be directly imported in our LaTeX project (if you need it).
 
 If you don't care about animating the trajectory, you can just use the resulting `.tex` as it is.
 Refer to [tikzplotlib](https://github.com/nschloe/tikzplotlib) for additional details and options for exporting 
 matplotlib figures for LaTeX.
 
 
-### Acknowledge
+### Acknowledgements
 If you use or intent to use these scripts for you documents or keynotes, please consider to 
 acknowledge the Author ([Simone Rossi](srossi93.gitlab.io)).
