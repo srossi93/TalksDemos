@@ -34,6 +34,8 @@ Examples:
 > python3 gradient_descend_2d.py --lr 0.1 --good_init --save_gif --save_tikz
 ```
 
+![](gif/demo_gd_good_init.gif)
+
 ## LaTeX and Tikz disclaimer
 
 If you want to use the resulting plot in a Beamer animation, you need to locate the last `\addplot` 
