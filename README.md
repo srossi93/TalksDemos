@@ -5,7 +5,6 @@ Just a bunch of scripts that can be used in talks, papers, posters, ...
 ## Gradient Descent Animation (with LaTeX export)
 This project presents some animations of
 [gradient descent](http://en.wikipedia.org/wiki/Gradient_descent).
-
 You can choose whether you just want to see the animation or exporting a GIF or even saving a tikz plot 
 ready to be included in your LaTeX documents.
 
