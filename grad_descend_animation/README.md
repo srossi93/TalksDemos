@@ -71,7 +71,7 @@ but it's also reported here for convenience.
 \end{frame}
 ```
 
-In `./fig/` you already have two prepared figures that can be directly imported in our LaTeX project (if you need it).
+In `./tikz/` you already have two prepared figures that can be directly imported in our LaTeX project (if you need it).
 
 If you don't care about animating the trajectory, you can just use the resulting `.tex` as it is.
 Refer to [tikzplotlib](https://github.com/nschloe/tikzplotlib) for additional details and options for exporting 
