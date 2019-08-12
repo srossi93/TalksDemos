@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.stats import multivariate_normal
 from matplotlib.ticker import MaxNLocator
 import matplotlib.animation as animation
+import tikzplotlib as tpl
 
 import argparse
 
@@ -90,5 +91,8 @@ if __name__ == '__main__':
     if args.save_tikz:
         ax0.plot(chains['pos'][..., 0], chains['pos'][..., 1], '.', c='black')
         ax1.plot(nlikl, color='#377eb8')
+        tpl.save('test.tex',
+                 figurewidth='\\figurewidth', figureheight='\\figureheight',
+                 strict=True, externalize_tables=False, show_info=True)
         plt.show()
 
