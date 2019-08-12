@@ -36,6 +36,9 @@ Examples:
 
 ![](gif/demo_gd_good_init.gif)
 
+If you want, you can customize the function to minimize without worrying about derivatives.
+Gradients are automatically computed using [`autograd`](https://github.com/HIPS/autograd).
+
 ## LaTeX and Tikz disclaimer
 
 If you want to use the resulting plot in a Beamer animation, you need to locate the last `\addplot` 
