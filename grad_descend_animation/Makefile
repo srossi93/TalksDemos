@@ -1,4 +1,4 @@
-MAIN_TEX := paper
+MAIN_TEX := presentation_example
 TEX_ENGINE := pdflatex
 BIBTEX_ENGINE := bibtex
 TEX_FLAGS := -shell-escape

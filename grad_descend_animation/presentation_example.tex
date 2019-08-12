@@ -1,0 +1,104 @@
+\documentclass[aspectratio=169]{beamer}
+\usefonttheme{serif}
+%\usepackage[driverfallback=dvipdfm]{hyperref}
+\usepackage{animate}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\newlength\figureheight
+\newlength\figurewidth
+\pgfplotsset{compat=newest}
+\usetikzlibrary{external}
+\usepackage{currfile}
+\usepackage{catchfile}
+\usepackage{etoolbox}
+\tikzexternalize[mode=list and make, ]
+
+
+\def\compilefigures
+
+\title{Using package \emph{animate} without Adobe}
+\subtitle{Use a Web browser and press \framebox{F11}}
+\author{AlexG}
+\date{\today}
+
+\makeatletter
+\makeatother
+
+\AtBeginEnvironment{tikzpicture}{\setmyname}
+
+
+\DeclareGraphicsRule{.pdf.pdf}{pdf}{*}{}
+\begin{document}
+\makeatletter
+\newcommand{\inputtikz}[1]{
+  \filename@parse{#1}
+  \let\fpath\filename@area
+  \ifdefined\compilefigures
+    %        \tikzsetnextfilename{\filename@area\filename@base.pdf}
+    \newcommand*\setmyname{%
+      \expandafter\tikzsetfigurename\expandafter{\filename@area\filename@base-}%
+      \apptocmd{\sa@document}{\setmyname}{\typeout{Append to document: OK!}}{\typeout{Append to document: Oh, no!}}
+    }
+    \InputIfFileExists
+    {\filename@area\filename@base}{}%
+    {File `#1' doesn't exist!}% (or using \errmessage)
+    %        \sometext
+  \else
+    \includegraphics[]{\fpath\filename@base.pdf.pdf}
+  \fi
+}
+\makeatother
+
+\frame{\titlepage}
+
+\begin{frame}[fragile]{Bad convergence}
+  % Style to select only points from #1 to #2 (inclusive)
+  \centering
+  \pgfplotsset{select coords between index/.style 2 args={
+        x filter/.code={
+            \ifnum\coordindex<#1\def\pgfmathresult{}\fi
+            \ifnum\coordindex>#2\def\pgfmathresult{}\fi
+          }
+      }}
+
+  \setlength\figureheight{.55\textwidth}
+  \setlength\figurewidth{.55\textwidth}
+  \begin{animateinline}[loop,autoplay]{4} % 2 frames per sec
+    \multiframe{15}{idx=1+1}{  % 22 fram
+      \inputtikz{tikz/gd_animation_bad_init}
+    }
+  \end{animateinline}
+
+\end{frame}
+\begin{frame}[fragile]{Good convergence}
+  % Style to select only points from #1 to #2 (inclusive)
+  \centering
+  \pgfplotsset{select coords between index/.style 2 args={
+        x filter/.code={
+            \ifnum\coordindex<#1\def\pgfmathresult{}\fi
+            \ifnum\coordindex>#2\def\pgfmathresult{}\fi
+          }
+      }}
+  \setlength\figureheight{.55\textwidth}
+  \setlength\figurewidth{.55\textwidth}
+  \begin{animateinline}[loop,autoplay]{10} % 2 frames per sec
+    \multiframe{25}{idx=1+1}{  % 22 fram
+      \inputtikz{tikz/gd_animation_good_init}
+    }
+  \end{animateinline}
+
+\end{frame}
+
+\begin{frame}{Hi}
+
+\end{frame}
+
+\end{document}
+
+
+
+
+
+
+
+%\end{document}
