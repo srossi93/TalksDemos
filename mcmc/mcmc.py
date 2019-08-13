@@ -43,15 +43,13 @@ if __name__ == '__main__':
     chains, chain_stats = sampler.sample_chain(250, init_pos)
 
     def loglikelihood(samples):
-        pos_minus_mean = samples - mean
-        return 0.5 * (np.diag(pos_minus_mean @ np.linalg.inv(cov) @ pos_minus_mean.T)
-                      + np.log(np.linalg.det(cov)))
+        return -multivariate_normal(mean, cov).logpdf(samples)
 
     samples = chains['pos']
     nlikl = [loglikelihood(samples[:i+1]).mean() for i in range(1, len(samples)+1)]
 
 
-    N = 64
+    N = 70
     X = np.linspace(-2, 4, N)
     Y = np.linspace(-1, 5, N)
     X, Y = np.meshgrid(X, Y)
@@ -82,7 +80,7 @@ if __name__ == '__main__':
             return ax0, ax1
 
 
-        ani = animation.FuncAnimation(fig, animate, frames=int(250/step), interval=10, blit=False)
+        ani = animation.FuncAnimation(fig, animate, frames=int(250/step), interval=1, blit=False)
         if args.animate:
             plt.show()
         if args.save_gif:
