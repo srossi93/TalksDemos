@@ -82,7 +82,7 @@ if __name__ == '__main__':
             return ax0, ax1
 
 
-        ani = animation.FuncAnimation(fig, animate, frames=25, interval=10, blit=False)
+        ani = animation.FuncAnimation(fig, animate, frames=int(250/step), interval=10, blit=False)
         if args.animate:
             plt.show()
         if args.save_gif:

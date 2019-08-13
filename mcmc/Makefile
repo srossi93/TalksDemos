@@ -53,7 +53,7 @@ view: $(PDF_FILE)
 	$(VIEWER) $(PDF_FILE) &
 
 clean:
-	rm -rf *.sav *.bak *.aux *.bcf *.fdb_latexmk *.fls *.makefile *.run.xml *.bbl *.blg *.figlist *.log *.pdf *.out *.toc *.xdv
+	rm -rf *.sav *.bak *.aux *.bcf *.fdb_latexmk *.fls *.makefile *.run.xml *.bbl *.blg *.figlist *.log *.pdf *.out *.toc *.xdv *nav *snm *vrb
 	find . -name "*.log" -type f -delete
 	find . -name "*.dep" -type f -delete
 	find . -name "*.dpth" -type f -delete
