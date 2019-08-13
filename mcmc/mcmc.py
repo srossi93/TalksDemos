@@ -5,14 +5,17 @@ from scipy.stats import multivariate_normal
 from matplotlib.ticker import MaxNLocator
 import matplotlib.animation as animation
 import tikzplotlib as tpl
-
 import argparse
 
 if __name__ == '__main__':
-
-    args = argparse.Namespace()
-    args.animate = True
-    args.save_tikz = False
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--animate', action='store_true',
+                        help='Animation with matplotlib')
+    parser.add_argument('--save_gif', action='store_true',
+                        help='Whether to save or not an animated GIF')
+    parser.add_argument('--save_tikz', action='store_true',
+                        help='Whether to save or not a tikz plot for LaTeX')
+    args = parser.parse_args()
 
     n_dim = 2
     mean = np.array([1., 2.])
@@ -50,7 +53,7 @@ if __name__ == '__main__':
 
     N = 64
     X = np.linspace(-2, 4, N)
-    Y = np.linspace(-2, 5, N)
+    Y = np.linspace(-1, 5, N)
     X, Y = np.meshgrid(X, Y)
 
     # Pack X and Y into a single 3-dimensional array
@@ -60,7 +63,7 @@ if __name__ == '__main__':
 
     rv = multivariate_normal(mean, cov)
     Z = rv.pdf(pos)
-    levelsf = MaxNLocator(nbins=20).tick_values(Z.min(), Z.max())
+    levelsf = MaxNLocator(nbins=10).tick_values(Z.min(), Z.max())
     fig, (ax0, ax1) = plt.subplots(1, 2)  # type: plt.Figure, (plt.Axes, plt.Axes)
     ax0.contour(X, Y, Z, levels=levelsf)
     ax1.set_xlim(0, 250)
@@ -79,11 +82,11 @@ if __name__ == '__main__':
             return ax0, ax1
 
 
-        ani = animation.FuncAnimation(fig, animate, frames=250, interval=3, blit=False)
+        ani = animation.FuncAnimation(fig, animate, frames=25, interval=10, blit=False)
         if args.animate:
             plt.show()
         if args.save_gif:
-            ani.save('gif/mcmc_animation.gif')
+            ani.save('gif/mcmc_animation.gif', writer=animation.PillowWriter())
 
     if args.save_tikz:
         ax0.plot(chains['pos'][..., 0], chains['pos'][..., 1], '.', c='black')

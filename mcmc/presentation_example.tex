@@ -13,8 +13,8 @@
 
 
 
-\title{Gradient descent animation}
-\subtitle{An example of GD}
+\title{HMC animation}
+\subtitle{An example of HCM}
 \author{Simone Rossi}
 \date{\today}
 
@@ -45,7 +45,7 @@
   \titlepage
 \end{frame}
 
-\begin{frame}[fragile]{Bad convergence}
+\begin{frame}[fragile]{Hamiltonian MonteCarlo - HMC}
   % Style to select only points from #1 to #2 (inclusive)
   \centering
   \pgfplotsset{select coords between index/.style 2 args={
@@ -55,32 +55,19 @@
           }
       }}
 
-  \setlength\figureheight{.55\textwidth}
-  \setlength\figurewidth{.55\textwidth}
-  \begin{animateinline}[loop,autoplay]{4} % 2 frames per sec
-    \multiframe{15}{idx=1+1}{  % 22 fram
-      \inputtikz{tikz/gd_animation_bad_init}
+  \setlength\figureheight{.49\textwidth}
+  \setlength\figurewidth{.49\textwidth}
+  \begin{animateinline}[loop,autoplay]{8} % 2 frames per sec
+    \multiframe{63}{idx=1+4}{  % 22 fram
+      \inputtikz{tikz/mcmc_animation}
     }
   \end{animateinline}
-
-\end{frame}
-\begin{frame}[fragile]{Good convergence}
-  % Style to select only points from #1 to #2 (inclusive)
-  \centering
-  \pgfplotsset{select coords between index/.style 2 args={
-        x filter/.code={
-            \ifnum\coordindex<#1\def\pgfmathresult{}\fi
-            \ifnum\coordindex>#2\def\pgfmathresult{}\fi
-          }
-      }}
-  \setlength\figureheight{.55\textwidth}
-  \setlength\figurewidth{.55\textwidth}
-  \begin{animateinline}[loop,autoplay]{10} % 2 frames per sec
-    \multiframe{25}{idx=1+1}{  % 22 fram
-      \inputtikz{tikz/gd_animation_good_init}
-    }
-  \end{animateinline}
-
 \end{frame}
 
 \end{document}
+
+
+
+
+
+
