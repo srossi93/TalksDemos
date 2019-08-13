@@ -1,3 +1,0 @@
-[submodule "mcmc_vs_vi/hmc"]
-	path = mcmc_vs_vi/hmc
-	url = https://github.com/matt-graham/hamiltonian-monte-carlo
