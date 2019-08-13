@@ -10,6 +10,11 @@ ready to be included in your LaTeX documents.
 
 Check the [README](./grad_descend_animation/README.md) for additional details.
 
+## Hamiltonian Monte Carlo Animation (with LaTeX export)
+
+This project provides an animation for MCMC sampling methods (in this case HMC).
+
+Check the [README](./mcmc/README.md) for additional details.
 
 ### Acknowledgements
 If you use or intent to use these scripts for you documents or keynotes, please consider to 
