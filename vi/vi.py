@@ -56,19 +56,66 @@ if __name__ == '__main__':
 
 
     fig, (ax0, ax1) = plt.subplots(1, 2)  # type: plt.Figure, (plt.Axes, plt.Axes)
-    i = 0
+    animate = False
     step = 1
-    def animate(*args, **kwargs):
-        global i
-        ax0.clear()
-        ax1.clear()
+    if animate:
+        i = 0
+        def animate(*args, **kwargs):
+            global i
+            ax0.clear()
+            ax1.clear()
 
-        ax0.set_xlim(-2, 4)
-        ax0.set_ylim(-1, 5)
-        ax1.set_xlim(0, len(hist_nloglik))
-        ax1.set_ylim(min(hist_nloglik), max(hist_nloglik))
+            ax0.set_xlim(-2, 4)
+            ax0.set_ylim(-1, 5)
+            ax1.set_xlim(0, len(hist_nloglik))
+            ax1.set_ylim(min(hist_nloglik), max(hist_nloglik))
 
-        N = 70
+            N = 64
+            X = np.linspace(-2, 4, N)
+            Y = np.linspace(-1, 5, N)
+            X, Y = np.meshgrid(X, Y)
+
+            # Pack X and Y into a single 3-dimensional array
+            pos = np.empty(X.shape + (2,))
+            pos[:, :, 0] = X
+            pos[:, :, 1] = Y
+            rv = multivariate_normal(true_mean, true_cov)
+            Z = rv.pdf(pos)
+            levelsf = MaxNLocator(nbins=8).tick_values(Z.min(), Z.max())
+            ax0.contourf(X, Y, Z, levels=levelsf, antialiased = True)
+
+            X = np.linspace(hist_vi_mean[i][0] - 5 * np.exp(hist_vi_logvars[i][0]),
+                            hist_vi_mean[i][0] + 5 * np.exp(hist_vi_logvars[i][0]), 32)
+            Y = np.linspace(hist_vi_mean[i][1] - 5 * np.exp(hist_vi_logvars[i][1]),
+                            hist_vi_mean[i][1] + 5 * np.exp(hist_vi_logvars[i][1]), 32)
+            X, Y = np.meshgrid(X, Y)
+
+            # Pack X and Y into a single 3-dimensional array
+            pos = np.empty(X.shape + (2,))
+            pos[:, :, 0] = X
+            pos[:, :, 1] = Y
+            rv = multivariate_normal(hist_vi_mean[i], np.diag(np.exp(hist_vi_logvars[i])))
+            Z = rv.pdf(pos)
+            levelsf = MaxNLocator(nbins=10).tick_values(Z.min(), Z.max())
+            ax0.contour(X, Y, Z, levels=levelsf, cmap='YlOrRd',)
+            ax1.plot(hist_nloglik[:i])
+            # ax0.legend()
+
+            i += step
+            i = min(i, len(hist_nloglik) - 1)
+            return ax0, ax1
+
+        ani = animation.FuncAnimation(fig, animate, frames=int(250/step), interval=1, blit=False)
+
+        plt.show()
+
+    else:
+        fig, ax0 = plt.subplots(1, 1)  # type: plt.Figure, (plt.Axes, plt.Axes)
+        # ax0.set_xlim(-2, 4)
+        # ax0.set_ylim(-1, 5)
+        ax0.set_xlim(0, len(hist_nloglik))
+        ax0.set_ylim(min(hist_nloglik), max(hist_nloglik))
+        N = 64
         X = np.linspace(-2, 4, N)
         Y = np.linspace(-1, 5, N)
         X, Y = np.meshgrid(X, Y)
@@ -79,28 +126,28 @@ if __name__ == '__main__':
         pos[:, :, 1] = Y
         rv = multivariate_normal(true_mean, true_cov)
         Z = rv.pdf(pos)
-        levelsf = MaxNLocator(nbins=8).tick_values(Z.min(), Z.max())
-        ax0.contour(X, Y, Z, levels=levelsf,)
+        levelsf = MaxNLocator(nbins=10).tick_values(Z.min(), Z.max())
+        # ax0.contourf(X, Y, Z, levels=levelsf, antialiased=True)
+        for i in range(0, 50, 10):
 
-        X = np.linspace(hist_vi_mean[i][0] - 5 * np.exp(hist_vi_logvars[i][0]), hist_vi_mean[i][0] + 5 * np.exp(hist_vi_logvars[i][0]), 32)
-        Y = np.linspace(hist_vi_mean[i][1] - 5 * np.exp(hist_vi_logvars[i][1]), hist_vi_mean[i][1] + 5 * np.exp(hist_vi_logvars[i][1]), 32)
-        # Y = np.linspace(-1, 5, N)
-        X, Y = np.meshgrid(X, Y)
+            # X = np.linspace(hist_vi_mean[i][0] - 5 * np.exp(hist_vi_logvars[i][0]),
+            #                 hist_vi_mean[i][0] + 5 * np.exp(hist_vi_logvars[i][0]), 32)
+            # Y = np.linspace(hist_vi_mean[i][1] - 5 * np.exp(hist_vi_logvars[i][1]),
+            #                 hist_vi_mean[i][1] + 5 * np.exp(hist_vi_logvars[i][1]), 32)
+            # X, Y = np.meshgrid(X, Y)
+            #
+            # # Pack X and Y into a single 3-dimensional array
+            # pos = np.empty(X.shape + (2,))
+            # pos[:, :, 0] = X
+            # pos[:, :, 1] = Y
+            rv = multivariate_normal(hist_vi_mean[i], np.diag(np.exp(hist_vi_logvars[i])))
+            Z = rv.pdf(pos)
+            levelsf = MaxNLocator(nbins=8).tick_values(Z.min(), Z.max())
+            # ax0.contour(X, Y, Z, levels=levelsf, cmap='YlOrRd',)
+            # ax0.legend()
 
-        # Pack X and Y into a single 3-dimensional array
-        pos = np.empty(X.shape + (2,))
-        pos[:, :, 0] = X
-        pos[:, :, 1] = Y
-        rv = multivariate_normal(hist_vi_mean[i], np.diag(np.exp(hist_vi_logvars[i])))
-        Z = rv.pdf(pos)
-        levelsf = MaxNLocator(nbins=8).tick_values(Z.min(), Z.max())
-        ax0.contour(X, Y, Z, levels=levelsf, cmap='plasma')
-        ax1.plot(hist_nloglik[:i])
-
-        i += step
-        i = min(i, len(hist_nloglik) - 1)
-        return ax0, ax1
-
-    ani = animation.FuncAnimation(fig, animate, frames=int(250/step), interval=1, blit=False)
-
-    plt.show()
+        ax0.plot(hist_nloglik)
+        tpl.save('tikz/vi_convergence_animation.tex',
+                 figurewidth='\\figurewidth', figureheight='\\figureheight',
+                 strict=True, externalize_tables=False, show_info=True)
+        plt.show()

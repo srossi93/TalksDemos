@@ -1,0 +1,74 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage{animate}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\newlength\figureheight
+\newlength\figurewidth
+\pgfplotsset{compat=newest}
+\usetikzlibrary{external}
+\usepgfplotslibrary{groupplots}
+\def\compilefigures
+\usepackage{etoolbox}
+\tikzexternalize[mode=list and make, ]
+
+
+
+\title{VI animation}
+\subtitle{An example of VI}
+\author{Simone Rossi}
+\date{\today}
+
+
+% \AtBeginEnvironment{tikzpicture}{\setmyname}
+\DeclareGraphicsRule{.pdf.pdf}{pdf}{*}{}
+\makeatletter
+\newcommand{\inputtikz}[1]{
+  \filename@parse{#1}
+  \let\fpath\filename@area
+  \ifdefined\compilefigures
+    \newcommand*\setmyname{%
+      \expandafter\tikzsetfigurename\expandafter{\filename@area\filename@base-}%
+      \apptocmd{\sa@document}{\setmyname}{\typeout{Append to document: OK!}}{\typeout{Append to document: Oh, no!}}
+    }
+    \InputIfFileExists
+    {\filename@area\filename@base}{}%
+    {File `#1' doesn't exist!}% (or using \errmessage)
+    %        \sometext
+  \else
+    \includegraphics[]{\fpath\filename@base.pdf.pdf}
+  \fi
+}
+\makeatother
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}[fragile]{Mean-field variational inference - VI}
+  % Style to select only points from #1 to #2 (inclusive)
+  \centering
+  \tikzexternaldisable
+  \pgfplotsset{select coords between index/.style 2 args={
+        x filter/.code={
+            \ifnum\coordindex<#1\def\pgfmathresult{}\fi
+            \ifnum\coordindex>#2\def\pgfmathresult{}\fi
+          }
+      }}
+
+  \setlength\figureheight{.49\textwidth}
+  \setlength\figurewidth{.49\textwidth}
+  \input{tikz/vi_animation.tex}
+  \tikzexternalenable
+  \begin{animateinline}[autoplay]{5} % 2 frames per sec
+    \multiframe{50}{idx=1+5}{  % 22 fram
+      \inputtikz{tikz/vi_convergence_animation}
+    }
+  \end{animateinline}
+\end{frame}
+
+\end{document}
+
+
+
+
